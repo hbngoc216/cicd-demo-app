@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodejs-cicd-demo
+  name: bn-nodejs-cicd-demo
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nodejs-cicd-demo
+      app: bn-nodejs-cicd-demo
   template:
     metadata:
       labels:
-        app: nodejs-cicd-demo
+        app: bn-nodejs-cicd-demo
     spec:
       containers:
-        - name: nodejs-cicd-demo
-          image: 470562161805.dkr.ecr.ap-southeast-1.amazonaws.com/nodejs-cicd-demo:latest
+        - name: bn-nodejs-cicd-demo
+          image: 475309741409.dkr.ecr.ap-northeast-2.amazonaws.com/bn-nodejs-cicd-demo:latest
           ports:
             - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-cicd-demo-svc
+  name: bn-nodejs-cicd-demo-svc
 spec:
   type: LoadBalancer
   selector:
-    app: nodejs-cicd-demo
+    app: bn-nodejs-cicd-demo
   ports:
     - port: 80
       targetPort: 3000
