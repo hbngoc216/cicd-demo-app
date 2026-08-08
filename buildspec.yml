@@ -15,7 +15,7 @@ phases:
   pre_build:
     commands:
       - echo "Đăng nhập vào Amazon ECR..."
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 475309741409.dkr.ecr.$AWS_REGION.amazonaws.com
       - REPO_URI=475309741409.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
