@@ -2,9 +2,9 @@ version: 0.2
 
 env:
   variables:
-    CLUSTER_NAME: "my-eks-cluster"
-    AWS_REGION: "ap-southeast-1"
-    ECR_REPO: "nodejs-cicd-demo"
+    CLUSTER_NAME: "bn-eks-cluster"
+    AWS_REGION: "ap-northeast-2"
+    ECR_REPO: "bn-nodejs-cicd-demo"
 
 phases:
   install:
