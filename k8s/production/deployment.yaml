@@ -17,6 +17,8 @@ spec:
         app: demo-app
 
     spec:
+      imagePullSecrets:
+        - name: ecr-secret
 
       affinity:
         podAntiAffinity:
