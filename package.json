@@ -1,11 +1,11 @@
 {
-  "name": "nodejs-cicd-demo",
+  "name": "demo-app",
   "version": "1.0.0",
   "description": "A simple Node.js application for CI/CD demo",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js", 
-    "build": "echo 'Building the application...'"
+    "start": "node server.js", 
+    "test": "node test.js"
   },
   "dependencies": {
     "express": "^4.17.1" 
