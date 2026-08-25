@@ -131,31 +131,55 @@ pipeline {
         }
 
         stage('Staging Health Check') {
-            steps {
-                withCredentials([
-                    file(
-                        credentialsId: 'kubeconfig',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
+    steps {
+        withCredentials([
+            file(
+                credentialsId: 'kubeconfig',
+                variable: 'KUBECONFIG'
+            )
+        ]) {
+            sh '''
+                echo "Waiting for Staging deployment..."
 
-                    sh '''
-                        POD=$(kubectl get pods \
-                          -n staging \
-                          -l app=demo-app \
-                          -o jsonpath='{.items[0].metadata.name}')
+                kubectl rollout status \
+                  deployment/demo-app \
+                  -n staging \
+                  --timeout=300s
 
-                        kubectl exec \
-                          -n staging \
-                          $POD \
-                          -- wget -qO- \
-                          http://127.0.0.1:3000/health
-                    '''
-                }
-            }
+                POD=$(kubectl get pods \
+                  -n staging \
+                  -l app=demo-app \
+                  --field-selector=status.phase=Running \
+                  --sort-by=.metadata.creationTimestamp \
+                  -o custom-columns=NAME:.metadata.name \
+                  --no-headers \
+                  | tail -n 1)
+
+                if [ -z "$POD" ]; then
+                    echo "ERROR: No running demo-app pod found"
+                    exit 1
+                fi
+
+                echo "Selected pod: $POD"
+
+                kubectl wait \
+                  --for=condition=Ready \
+                  pod/$POD \
+                  -n staging \
+                  --timeout=120s
+
+                kubectl exec \
+                  -n staging \
+                  "$POD" \
+                  -c demo-app \
+                  -- wget -qO- \
+                  http://127.0.0.1:3000/health
+            '''
         }
+    }
+}
 
-        stage('Manual Approval') {
+stage('Manual Approval') {
             steps {
                 input(
                     message:
