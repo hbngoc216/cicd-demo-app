@@ -210,7 +210,7 @@ pipeline {
                         kubectl rollout status \
                           deployment/demo-app \
                           -n production \
-                          --timeout=120s
+                          --timeout=300s
 
                         STATUS=$?
 
@@ -230,7 +230,7 @@ pipeline {
                                 kubectl rollout status \
                                   deployment/demo-app \
                                   -n production \
-                                  --timeout=120s
+                                  --timeout=300s
                             fi
 
                             exit 1
